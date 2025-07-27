@@ -29,7 +29,7 @@ async function fetchQuestionsFromGemini() {
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const prompt = `
-      Generate 10 questions based on current geopolitical and financial events to assess a person’s investment worldview. 
+      Generate 100 questions based on current geopolitical and financial events to assess a person’s investment worldview. 
       The questions need to be topical and relevant to the current events, like polymarket odds betting questions on 
       politics, tech, finance, etc. Ensure the questions use the most up to date information possible and fact check things like
       dates and stock prices to ensure they are accurate and up to date as this is imperative. Example questions (not necissarily up to date):
@@ -105,8 +105,15 @@ async function getQuestions() {
 app.get('/api/questions', async (req, res) => {
   console.log('Received a request at /api/questions');
   try {
-    const questions = await getQuestions();
-    res.json({ questions });
+    const allQuestions = await getQuestions();
+    
+    // Shuffle the array of all questions
+    const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+    
+    // Get the first 10 questions from the shuffled array
+    const selectedQuestions = shuffled.slice(0, 10);
+    
+    res.json({ questions: selectedQuestions });
   } catch (error) {
     res.status(500).json({ error: 'Failed to serve questions from the AI service.' });
   }

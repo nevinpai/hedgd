@@ -129,20 +129,22 @@ export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable 
           style={{ opacity: contentOpacity }}
         >
           {isIntro ? (
-            <div className="flex flex-col h-full w-full justify-center items-center text-center space-y-8">
+            <div className="flex flex-col h-full w-full justify-center items-center text-center space-y-8 p-4">
               <div className="w-24 h-24">
                 <img
                   src={hedgdLogo}
-                  alt="hedgd logo"
+                  alt="hedgd Logo"
+                  className="w-full h-full object-contain"
                   draggable={false}
-                  className="w-full h-full object-contain pointer-events-none select-none"
-                  style={{
-                    filter: 'drop-shadow(2px 2px 0 #555) drop-shadow(-2px -2px 0 #555) drop-shadow(2px -2px 0 #555) drop-shadow(-2px 2px 0 #555)'
-                  }}
                 />
               </div>
-              <h2 className="text-2xl font-thin text-gray-700 leading-snug max-w-xs" style={{ fontFamily: 'Georgia, serif', fontWeight: '400' }}>
-                swipe right to begin your journey
+              <h2 className="font-thin text-gray-700 leading-snug max-w-xs"
+                style={{ fontFamily: 'Georgia, serif', fontWeight: '400', textAlign: 'left', paddingLeft: '2rem', paddingRight: '2rem', fontSize: '1.2rem' }}>
+                we'll ask you a series of questions to determine where you stand on a variety of topics.
+                our AI will use your answers to find the best stocks for you based on your beliefs. <br />
+                <br />swipe ➡️ if you agree <br />
+                swipe ⬅️ if you disagree <br />
+                <br /> swipe either way ↔️ to begin
               </h2>
             </div>
           ) : (
@@ -160,7 +162,7 @@ export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable 
                 fontFamily: 'Georgia, serif',
                 fontSize: 'clamp(2rem, 8vw, 3.5rem)',
                 lineHeight: '1.2',
-                fontWeight: '700',
+                fontWeight: '550',
                 color: '#1F2937',
                 overflowWrap: 'break-word',
               }}>

@@ -3,6 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import SwipeableCard from './components/SwipeableCard';
 import ProgressBar from './components/ProgressBar'; // Import the new component
 import WelcomeScreen from './components/WelcomeScreen'; // Import the new component
+import LoadingScreen from './components/LoadingScreen'; // Import the new loading screen
+import BackArrowIcon from './components/BackArrowIcon'; // Import the new icon
 import hedgdLogo from './assets/hedgd_logo.png';
 import './index.css';
 
@@ -53,6 +55,13 @@ export default function App() {
     fetchQuestions();
   }, []);
 
+  function handleGoBack() {
+    if (cardIndex > 1) {
+      setCardIndex((prev) => prev - 1);
+      setAnswers((prev) => prev.slice(0, prev.length - 1));
+    }
+  }
+
   function handleStart() {
     setShowWelcome(false);
   }
@@ -77,27 +86,16 @@ export default function App() {
   }
 
   if (error) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-900 text-red-500">Error: {error}</div>;
+    return <div className="min-h-screen flex items-center justify-center bg-hedgd-blue text-red-500">Error: {error}</div>;
   }
   
-  // Show final JSON after all questions
-  if (cardIndex > 0 && cardIndex > questions.length) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-hedgd-blue">
-        <div className="bg-hedgd-card rounded-2xl shadow-xl p-8 max-w-md w-full flex flex-col items-center">
-          <img src={hedgdLogo} alt="hedgd logo" className="w-20 h-20 mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-4 text-center">Your Answers</h2>
-          <pre className="bg-gray-900 text-gray-300 rounded p-4 w-full overflow-x-auto text-xs text-left">
-            {JSON.stringify(answers, null, 2)}
-          </pre>
-          <p className="text-gray-300 text-xs mt-4 text-center">(This will be sent to the LLM for personalized investment suggestions)</p>
-        </div>
-      </div>
-    );
+  if (questions.length > 0 && answers.length === questions.length) {
+    return <LoadingScreen />;
   }
 
   const progress = questions.length > 0 ? (answers.length / questions.length) * 100 : 0;
   const isProgressBarVisible = cardIndex > 0 && cardIndex <= questions.length;
+  const isBackArrowVisible = cardIndex >= 1 && cardIndex <= questions.length;
 
   return (
     <div className="min-h-screen flex flex-col bg-white overflow-hidden">
@@ -138,6 +136,24 @@ export default function App() {
           })}
         </AnimatePresence>
       </div>
+
+      {isBackArrowVisible && (
+        <button
+          onClick={handleGoBack}
+          style={{
+            position: 'absolute',
+            bottom: '2rem',
+            left: '2rem',
+            color: '#9CA3AF',
+            transition: 'color 300ms'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.color = '#4B5563'}
+          onMouseOut={(e) => e.currentTarget.style.color = '#9CA3AF'}
+          aria-label="Go back"
+        >
+          <BackArrowIcon style={{ width: '2rem', height: '2rem' }} />
+        </button>
+      )}
     </div>
   );
 }
