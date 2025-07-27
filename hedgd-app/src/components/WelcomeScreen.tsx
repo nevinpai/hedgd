@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 interface WelcomeScreenProps {
@@ -24,7 +25,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
 
   return (
     <motion.div
-      className="absolute inset-0 bg-white flex flex-col  text-center p-8 z-50"
+      className="absolute inset-0 bg-white flex flex-col justify-between text-center p-8 z-50"
       initial={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: '100vh', transition: { duration: 0.7, ease: "easeInOut" } }}
     >
@@ -51,8 +52,10 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
       </div>
 
       {/* Disclaimer */}
-      <p className="text-xs text-gray-400 italic">
-        *disclaimer about investing*
+      <p className="text-xs text-gray-400 italic" style={{ fontFamily: 'Georgia, serif' }}>
+        <Link to="/disclaimer" className="hover:text-gray-600" style={{textDecoration: 'underline', color: 'gray', fontSize: '0.8rem'}}>
+          Disclaimer
+        </Link>
       </p>
     </motion.div>
   );

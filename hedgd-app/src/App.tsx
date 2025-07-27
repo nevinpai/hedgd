@@ -95,7 +95,7 @@ export default function App() {
 
   const progress = questions.length > 0 ? (answers.length / questions.length) * 100 : 0;
   const isProgressBarVisible = cardIndex > 0 && cardIndex <= questions.length;
-  const isBackArrowVisible = cardIndex >= 1 && cardIndex <= questions.length;
+  const isBackArrowVisible = cardIndex > 1 && cardIndex <= questions.length;
 
   return (
     <div className="min-h-screen flex flex-col bg-white overflow-hidden">

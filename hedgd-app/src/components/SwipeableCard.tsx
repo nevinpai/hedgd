@@ -117,7 +117,7 @@ export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable 
         >
           <span 
             className="font-extrabold tracking-widest text-center"
-            style={{ fontSize: 'clamp(4rem, 12vw, 10rem)' }}
+            style={{ fontSize: 'clamp(4rem, 12vw, 10rem)', fontFamily: 'Georgia, serif' }}
           >
             {feedbackText}
           </span>
