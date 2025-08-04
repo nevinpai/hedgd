@@ -129,23 +129,22 @@ export default function App() {
         </AnimatePresence>
       </div>
 
-      {isBackArrowVisible && (
-        <button
-          onClick={handleGoBack}
-          style={{
-            position: 'absolute',
-            bottom: '2rem',
-            left: '2rem',
-            color: '#9CA3AF',
-            transition: 'color 300ms'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.color = '#4B5563'}
-          onMouseOut={(e) => e.currentTarget.style.color = '#9CA3AF'}
-          aria-label="Go back"
-        >
-          <BackArrowIcon style={{ width: '2rem', height: '2rem' }} />
-        </button>
-      )}
+      <div style={{ height: '5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        {isBackArrowVisible && (
+          <button
+            onClick={handleGoBack}
+            style={{
+              color: '#9CA3AF',
+              transition: 'color 300ms'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.color = '#4B5563'}
+            onMouseOut={(e) => e.currentTarget.style.color = '#9CA3AF'}
+            aria-label="Go back"
+          >
+            <BackArrowIcon style={{ width: '1.5rem', height: '1.5rem' }} />
+          </button>
+        )}
+      </div>
     </div>
   );
 }
