@@ -5,26 +5,7 @@ import ProgressBar from './components/ProgressBar'; // Import the new component
 import WelcomeScreen from './components/WelcomeScreen'; // Import the new component
 import LoadingScreen from './components/LoadingScreen'; // Import the new loading screen
 import BackArrowIcon from './components/BackArrowIcon'; // Import the new icon
-import hedgdLogo from './assets/hedgd_logo.png';
 import './index.css';
-
-const placeholderImages = [
-  'https://source.unsplash.com/featured/?finance',
-  'https://source.unsplash.com/featured/?risk',
-  'https://source.unsplash.com/featured/?technology',
-  'https://source.unsplash.com/featured/?esg',
-  'https://source.unsplash.com/featured/?dividend',
-  'https://source.unsplash.com/featured/?international',
-  'https://source.unsplash.com/featured/?environment',
-  'https://source.unsplash.com/featured/?crypto',
-  'https://source.unsplash.com/featured/?realestate',
-  'https://source.unsplash.com/featured/?liquidity',
-  'https://source.unsplash.com/featured/?stocks',
-  'https://source.unsplash.com/featured/?bonds',
-  'https://source.unsplash.com/featured/?growth',
-  'https://source.unsplash.com/featured/?value',
-  'https://source.unsplash.com/featured/?emerging-markets',
-];
 
 export default function App() {
   const [questions, setQuestions] = useState<string[]>([]);
