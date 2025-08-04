@@ -7,6 +7,10 @@ import LoadingScreen from './components/LoadingScreen'; // Import the new loadin
 import BackArrowIcon from './components/BackArrowIcon'; // Import the new icon
 import './index.css';
 
+const apiUrl = import.meta.env.DEV
+  ? 'http://localhost:3001/api/questions'
+  : 'https://hedgd.onrender.com/api/questions';
+
 export default function App() {
   const [questions, setQuestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +23,7 @@ export default function App() {
     async function fetchQuestions() {
       try {
         setLoading(true);
-        const response = await fetch('https://hedgd.onrender.com/api/questions');
+        const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error('Failed to fetch questions from the server.');
         }
@@ -79,7 +83,7 @@ export default function App() {
   const isBackArrowVisible = cardIndex > 1 && cardIndex <= questions.length;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white overflow-hidden">
+    <div className="h-screen flex flex-col bg-hedgd-blue overflow-hidden">
       <ProgressBar progress={progress} isVisible={isProgressBarVisible} />
       
       <div className="relative flex-grow flex items-center justify-center">
