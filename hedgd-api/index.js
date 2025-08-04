@@ -15,8 +15,20 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const tavily = createTavilyClient({ apiKey: process.env.TAVILY_API_KEY });
 
 // --- Middleware ---
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'https://hedgd.onrender.com',
+  'YOUR_FRONTEND_APP_URL' // Replace with your frontend's actual deployed URL
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173' // Replace with your frontend's actual deployed URL in production
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
 }));
 app.use(express.json());
 
