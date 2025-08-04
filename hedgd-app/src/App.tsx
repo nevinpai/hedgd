@@ -93,7 +93,7 @@ export default function App() {
     <div style={{height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: showWelcome ? '#FFFFFF' : '#1a223f', overflow: 'hidden'}}>
       <ProgressBar progress={progress} isVisible={isProgressBarVisible} />
       
-      <div style={{position: 'relative', flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      <div style={{position: 'relative', flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '1rem'}}>
         <AnimatePresence>
           {showWelcome && <WelcomeScreen onStart={handleStart} />}
 
