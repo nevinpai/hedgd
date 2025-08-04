@@ -25,13 +25,14 @@ export default function LoadingScreen() {
   }, [currentMessageIndex]);
 
   const containerStyle: React.CSSProperties = {
-    minHeight: '100vh',
+    height: '100vh',
+    overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    color: '#000000',
-    padding: '0 1rem',
+    backgroundColor: '#1a223f',
+    color: 'white',
+    padding: '1rem',
   };
 
   const wrapperStyle: React.CSSProperties = {
@@ -75,4 +76,4 @@ export default function LoadingScreen() {
       </div>
     </div>
   );
-} 
+}

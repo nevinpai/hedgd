@@ -31,7 +31,6 @@ export default function App() {
         setQuestions(data.questions || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred.');
-        // Optional: fall back to some default questions
         setQuestions(['Failed to load questions. Please try again later.']);
       } finally {
         setLoading(false);
@@ -66,12 +65,20 @@ export default function App() {
     setCardIndex((prev) => prev + 1);
   }
 
+  const pageStyle: React.CSSProperties = {
+    height: '100vh',
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">Loading questions...</div>;
+    return <div style={{...pageStyle, backgroundColor: '#111827', color: 'white'}}>Loading questions...</div>;
   }
 
   if (error) {
-    return <div className="min-h-screen flex items-center justify-center bg-hedgd-blue text-red-500">Error: {error}</div>;
+    return <div style={{...pageStyle, backgroundColor: '#1a223f', color: '#EF4444'}}>Error: {error}</div>;
   }
   
   if (questions.length > 0 && answers.length === questions.length) {
@@ -83,10 +90,10 @@ export default function App() {
   const isBackArrowVisible = cardIndex > 1 && cardIndex <= questions.length;
 
   return (
-    <div className="h-screen flex flex-col bg-hedgd-blue overflow-hidden">
+    <div style={{height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#1a223f', overflow: 'hidden'}}>
       <ProgressBar progress={progress} isVisible={isProgressBarVisible} />
       
-      <div className="relative flex-grow flex items-center justify-center">
+      <div style={{position: 'relative', flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         <AnimatePresence>
           {showWelcome && <WelcomeScreen onStart={handleStart} />}
 
