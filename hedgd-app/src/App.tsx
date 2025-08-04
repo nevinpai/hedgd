@@ -66,7 +66,7 @@ export default function App() {
   }
 
   const pageStyle: React.CSSProperties = {
-    height: '100vh',
+    height: '100%',
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
@@ -74,11 +74,11 @@ export default function App() {
   };
 
   if (loading) {
-    return <div style={{...pageStyle, backgroundColor: '#111827', color: 'white'}}>Loading questions...</div>;
+    return <div style={{...pageStyle, backgroundColor: '#FFFFFF', color: '#000000'}}>Loading questions...</div>;
   }
 
   if (error) {
-    return <div style={{...pageStyle, backgroundColor: '#1a223f', color: '#EF4444'}}>Error: {error}</div>;
+    return <div style={{...pageStyle, backgroundColor: '#FFFFFF', color: '#EF4444'}}>Error: {error}</div>;
   }
   
   if (questions.length > 0 && answers.length === questions.length) {
@@ -90,7 +90,7 @@ export default function App() {
   const isBackArrowVisible = cardIndex > 1 && cardIndex <= questions.length;
 
   return (
-    <div style={{height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#1a223f', overflow: 'hidden'}}>
+    <div style={{height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: showWelcome ? '#FFFFFF' : '#1a223f', overflow: 'hidden'}}>
       <ProgressBar progress={progress} isVisible={isProgressBarVisible} />
       
       <div style={{position: 'relative', flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>

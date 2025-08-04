@@ -138,7 +138,7 @@ export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable 
                   draggable={false}
                 />
               </div>
-              <h2 className="font-thin text-gray-700 leading-snug max-w-xs"
+              <h2 className="font-thin text-black leading-snug max-w-xs"
                 style={{ fontFamily: 'Georgia, serif', fontWeight: '400', textAlign: 'left', paddingLeft: '2rem', paddingRight: '2rem', fontSize: '1.2rem' }}>
                 we'll ask you a series of questions to determine where you stand on a variety of topics.
                 our AI will use your answers to find the best stocks for you based on your beliefs. <br />
@@ -163,7 +163,7 @@ export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable 
                 fontSize: 'clamp(2rem, 8vw, 3.5rem)',
                 lineHeight: '1.2',
                 fontWeight: '550',
-                color: '#1F2937',
+                color: '#000000',
                 overflowWrap: 'break-word',
               }}>
                 {question}

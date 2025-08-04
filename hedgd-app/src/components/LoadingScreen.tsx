@@ -25,13 +25,13 @@ export default function LoadingScreen() {
   }, [currentMessageIndex]);
 
   const containerStyle: React.CSSProperties = {
-    height: '100vh',
+    height: '100%',
     overflow: 'hidden',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1a223f',
-    color: 'white',
+    backgroundColor: '#FFFFFF',
+    color: '#000000',
     padding: '1rem',
   };
 

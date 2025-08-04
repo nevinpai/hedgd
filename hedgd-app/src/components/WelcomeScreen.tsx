@@ -22,7 +22,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
     textAlign: 'center',
     padding: '2rem',
     zIndex: 50,
-    height: '100vh',
+    height: '100%',
     overflow: 'hidden',
   };
 
@@ -47,10 +47,10 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
       exit={{ opacity: 0, y: '100vh', transition: { duration: 0.7, ease: "easeInOut" } }}
     >
       <div style={{paddingTop: '5rem'}}>
-        <h1 style={{ fontFamily: 'Recoleta-Regular', fontWeight: 200, fontSize: 'clamp(1rem, 12vw, 4rem)', color: '#374151' }}>
+        <h1 style={{ fontFamily: 'Recoleta-Regular', fontWeight: 200, fontSize: 'clamp(1rem, 12vw, 4rem)', color: '#000000' }}>
           Can Your Beliefs Beat the Market?
         </h1>
-        <p style={{ marginTop: '1rem', fontSize: '1.25rem', color: '#4B5563', fontFamily: 'Georgia, serif' }}>
+        <p style={{ marginTop: '1rem', fontSize: '1.25rem', color: '#000000', fontFamily: 'Georgia, serif' }}>
           Our sophisticated A.I. uses your predictions to find the best stocks
         </p>
       </div>
@@ -66,8 +66,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStart }) => {
         </button>
       </div>
 
-      <p style={{ fontSize: '0.75rem', color: '#9CA3AF', fontStyle: 'italic', fontFamily: 'Georgia, serif' }}>
-        <Link to="/disclaimer" style={{textDecoration: 'underline', color: 'gray', fontSize: '0.8rem'}}>
+      <p style={{ fontSize: '0.75rem', color: '#000000', fontStyle: 'italic', fontFamily: 'Georgia, serif' }}>
+        <Link to="/disclaimer" style={{textDecoration: 'underline', color: 'black', fontSize: '0.8rem'}}>
           Disclaimer
         </Link>
       </p>
