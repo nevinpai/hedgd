@@ -38,7 +38,7 @@ export default function App() {
     async function fetchQuestions() {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3001/api/questions');
+        const response = await fetch('https://hedgd-api.onrender.com/api/questions');
         if (!response.ok) {
           throw new Error('Failed to fetch questions from the server.');
         }
