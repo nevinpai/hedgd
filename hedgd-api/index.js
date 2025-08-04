@@ -16,9 +16,9 @@ const tavily = createTavilyClient({ apiKey: process.env.TAVILY_API_KEY });
 
 // --- Middleware ---
 const allowedOrigins = [
-  'http://localhost:5173', 
+  'http://localhost:5173',
   'https://hedgd.onrender.com',
-  'YOUR_FRONTEND_APP_URL' // Replace with your frontend's actual deployed URL
+  'https://hedgd.xyz',
 ];
 
 app.use(cors({
@@ -117,13 +117,50 @@ Do not fabricate hypothetical scenarios that are not in the news.
 If no such real-time topic exists, generate no question.
 
 ✅ EXAMPLES OF CORRECT QUESTIONS:
-Will China ban AI chip exports to the U.S. before September 30, 2025?
-Will the Federal Reserve cut interest rates at the September 2025 FOMC meeting?
-Will Iran announce successful uranium enrichment beyond 90% by November 1, 2025?
-Will the U.S. Congress pass new tariffs on Chinese EVs before October 15, 2025?
-Will the European Central Bank begin quantitative easing again before year-end 2025?
-Will oil prices be impacted by a new OPEC+ production cut before October 2025? (oil currently at $78/barrel)
-Will the Japanese government intervene in currency markets before September 30, 2025?
+Will the U.S. government shut down for at least one day before the end of 2025?
+
+
+Will North Korea test a nuclear weapon or missile before the end of 2025?
+
+
+Will China hold military drills near Taiwan before November 2025?
+
+
+Will a NATO country announce new troop deployments to Eastern Europe before 2026?
+
+
+Will a major international peace deal be signed for Ukraine before January 2026?
+
+
+Will Iran sign a new nuclear agreement with any Western country before 2026?
+
+
+Will the U.S. Federal Reserve cut interest rates before December 2025?
+
+
+Will a major U.S. bank face a government investigation before early 2026?
+
+
+Will the SEC approve new rules for cryptocurrency trading before the end of 2025?
+
+
+Will a global recession be officially declared by the IMF before mid-2026?
+
+
+Will a U.S. tech giant like Apple, Google, or Amazon face antitrust charges before 2026?
+
+
+Will the U.S. block new Chinese technology imports before 2026?
+
+
+Will TikTok be banned or heavily restricted in the U.S. before January 2026?
+
+
+Will a new global climate agreement be signed at the 2025 UN climate summit?
+
+
+Will OPEC+ reduce oil production again before the end of 2025?
+
 
 ⚠️ DO NOT:
 Do not reference stock price targets or returns.
@@ -217,5 +254,5 @@ app.get('/api/questions', async (req, res) => {
 
 // --- Start Server ---
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 }); 
