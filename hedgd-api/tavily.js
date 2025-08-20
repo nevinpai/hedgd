@@ -1,7 +1,7 @@
-const Tavily = require('@tavily/core');
+const { tavily: createTavilyClient } = require('@tavily/core');
 const NodeCache = require('node-cache');
 
-const tavily = new Tavily(process.env.TAVILY_API_KEY);
+const tavily = createTavilyClient({ apiKey: process.env.TAVILY_API_KEY });
 const stockCache = new NodeCache({ stdTTL: 172800, checkperiod: 86400 }); // 2-day TTL, check every day
 
 const stocks = [
