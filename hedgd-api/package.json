@@ -14,7 +14,8 @@
     "@google/generative-ai": "^0.24.1",
     "@tavily/core": "^0.5.10",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "dotenv": "^17.2.1"

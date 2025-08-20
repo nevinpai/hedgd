@@ -6,6 +6,8 @@ const express = require('express');
 const cors = require('cors');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { tavily: createTavilyClient } = require('@tavily/core');
+const { generateRecommendations } = require('./gemini.js');
+require('./tavily.js'); // This will start the caching and refreshing process
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -249,6 +251,21 @@ app.get('/api/questions', async (req, res) => {
     res.json({ questions: selectedQuestions });
   } catch (error) {
     res.status(500).json({ error: 'Failed to serve questions from the AI service.' });
+  }
+});
+
+app.post('/api/recommendations', async (req, res) => {
+  const { answers } = req.body;
+
+  if (!answers) {
+    return res.status(400).json({ error: 'Answers are required.' });
+  }
+
+  try {
+    const recommendations = await generateRecommendations(answers);
+    res.json(recommendations);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to generate recommendations.' });
   }
 });
 

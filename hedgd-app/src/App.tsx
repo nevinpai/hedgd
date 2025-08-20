@@ -1,29 +1,41 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import SwipeableCard from './components/SwipeableCard';
-import ProgressBar from './components/ProgressBar'; // Import the new component
-import WelcomeScreen from './components/WelcomeScreen'; // Import the new component
-import LoadingScreen from './components/LoadingScreen'; // Import the new loading screen
-import BackArrowIcon from './components/BackArrowIcon'; // Import the new icon
+import ProgressBar from './components/ProgressBar';
+import WelcomeScreen from './components/WelcomeScreen';
+import LoadingScreen from './components/LoadingScreen';
+import BackArrowIcon from './components/BackArrowIcon';
+import RecommendationIntroCard from './components/RecommendationIntroCard';
+import RecommendationCard from './components/RecommendationCard';
+import SummaryCard from './components/SummaryCard';
 import './index.css';
 
-const apiUrl = import.meta.env.DEV
-  ? 'http://localhost:3001/api/questions'
-  : 'https://hedgd.onrender.com/api/questions';
+const questionsApiUrl = 'https://hedgd.onrender.com/api/questions';
+const recommendationsApiUrl = 'https://hedgd.onrender.com/api/recommendations';
+
+interface Recommendation {
+  score: number;
+  ticker: string;
+  explanation: string;
+}
 
 export default function App() {
   const [questions, setQuestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showWelcome, setShowWelcome] = useState(true); // New state for welcome screen
+  const [showWelcome, setShowWelcome] = useState(true);
   const [cardIndex, setCardIndex] = useState(0);
   const [answers, setAnswers] = useState<{ question: string; answer: boolean }[]>([]);
+  const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
+  const [loadingRecommendations, setLoadingRecommendations] = useState(false);
+  const [recommendationCardIndex, setRecommendationCardIndex] = useState(0);
+  const [showSummary, setShowSummary] = useState(false);
 
   useEffect(() => {
     async function fetchQuestions() {
       try {
         setLoading(true);
-        const response = await fetch(apiUrl);
+        const response = await fetch(questionsApiUrl);
         if (!response.ok) {
           throw new Error('Failed to fetch questions from the server.');
         }
@@ -39,6 +51,32 @@ export default function App() {
     fetchQuestions();
   }, []);
 
+  useEffect(() => {
+    async function fetchRecommendations() {
+      if (answers.length === questions.length && questions.length > 0) {
+        try {
+          const response = await fetch(recommendationsApiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ answers }),
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch recommendations.');
+          }
+          const data = await response.json();
+          setRecommendations(data.recommendations || []);
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+        } finally {
+          setLoadingRecommendations(false);
+        }
+      }
+    }
+    fetchRecommendations();
+  }, [answers, questions]);
+
   function handleGoBack() {
     if (cardIndex > 1) {
       setCardIndex((prev) => prev - 1);
@@ -51,18 +89,23 @@ export default function App() {
   }
 
   function handleSwipe(direction: 'left' | 'right') {
-    if (cardIndex === 0) {
-      if (questions.length > 0) {
+    if (cardIndex > 0 && cardIndex <= questions.length) {
+        if (cardIndex === questions.length) {
+            setLoadingRecommendations(true);
+        }
+        const answer = direction === 'right';
+        setAnswers((prev) => [
+            ...prev,
+            { question: questions[cardIndex - 1], answer },
+        ]);
+        setCardIndex((prev) => prev + 1);
+    } else if (cardIndex === 0) { // First intro card
         setCardIndex(1);
-      }
-      return;
+    } else if (recommendationCardIndex < recommendations.length) { // Recommendation cards
+        setRecommendationCardIndex((prev) => prev + 1);
+    } else if (recommendationCardIndex === recommendations.length) {
+        setShowSummary(true);
     }
-    const answer = direction === 'right';
-    setAnswers((prev) => [
-      ...prev,
-      { question: questions[cardIndex - 1], answer },
-    ]);
-    setCardIndex((prev) => prev + 1);
   }
 
   const pageStyle: React.CSSProperties = {
@@ -81,12 +124,23 @@ export default function App() {
     return <div style={{...pageStyle, backgroundColor: '#FFFFFF', color: '#EF4444'}}>Error: {error}</div>;
   }
   
-  if (questions.length > 0 && answers.length === questions.length) {
+  if (loadingRecommendations) {
     return <LoadingScreen />;
   }
 
-  const progress = questions.length > 0 ? (answers.length / questions.length) * 100 : 0;
-  const isProgressBarVisible = cardIndex > 0 && cardIndex <= questions.length;
+  if (showSummary) {
+    return (
+        <div style={{...pageStyle, backgroundColor: '#1a223f'}}>
+            <SummaryCard answers={answers} recommendations={recommendations} />
+        </div>
+    );
+  }
+
+  const allQuestionsAnswered = questions.length > 0 && answers.length === questions.length;
+  const progress = allQuestionsAnswered 
+    ? (recommendationCardIndex / (recommendations.length + 1)) * 100 
+    : (answers.length / questions.length) * 100;
+  const isProgressBarVisible = (cardIndex > 0 && cardIndex <= questions.length) || allQuestionsAnswered;
   const isBackArrowVisible = cardIndex > 1 && cardIndex <= questions.length;
 
   return (
@@ -105,7 +159,7 @@ export default function App() {
             />
           )}
 
-          {!showWelcome && cardIndex > 0 && questions.slice(cardIndex - 1, cardIndex + 2).map((question, index) => {
+          {!showWelcome && cardIndex > 0 && cardIndex <= questions.length && questions.slice(cardIndex - 1, cardIndex + 2).map((question, index) => {
             const isTopCard = index === 0;
             const cardRealIndex = cardIndex - 1 + index;
 
@@ -124,6 +178,40 @@ export default function App() {
                   transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
                 }}
               />
+            );
+          })}
+
+          {allQuestionsAnswered && recommendationCardIndex === 0 && (
+            <SwipeableCard
+                key="recommendation-intro"
+                onSwipe={handleSwipe}
+                isDraggable={true}
+            >
+                <RecommendationIntroCard />
+            </SwipeableCard>
+          )}
+
+          {allQuestionsAnswered && recommendationCardIndex > 0 && recommendations.slice(recommendationCardIndex - 1, recommendationCardIndex + 2).map((rec, index) => {
+            const isTopCard = index === 0;
+            const cardRealIndex = recommendationCardIndex - 1 + index;
+
+            if (cardRealIndex >= recommendations.length) return null;
+
+            return (
+                <RecommendationCard
+                    key={rec.ticker}
+                    ticker={rec.ticker}
+                    explanation={rec.explanation}
+                    score={rec.score}
+                    onSwipe={handleSwipe}
+                    isDraggable={isTopCard}
+                    style={{
+                        zIndex: recommendations.length - cardRealIndex,
+                        transform: `scale(${1 - index * 0.05}) translateY(-${index * 20}px)`,
+                        opacity: 1 - index * 0.1,
+                        transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
+                    }}
+                />
             );
           })}
         </AnimatePresence>

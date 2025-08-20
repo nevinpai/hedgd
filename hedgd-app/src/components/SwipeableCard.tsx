@@ -8,9 +8,10 @@ interface SwipeableCardProps {
   onSwipe: (direction: 'left' | 'right') => void;
   isDraggable?: boolean;
   style?: React.CSSProperties;
+  children?: React.ReactNode;
 }
 
-export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable = true, style }: SwipeableCardProps) {
+export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable = true, style, children }: SwipeableCardProps) {
   // --- Motion Values Setup ---
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-300, 0, 300], [-15, 0, 15]);
@@ -25,12 +26,18 @@ export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable 
   // --- Style Transformations ---
   const bgGlow = useTransform(feedbackState, (state) => {
     const baseShadow = '0 4px 14px 0 rgba(0, 0, 0, 0.1)'; // A subtle, consistent shadow
+    if (isIntro && (state === 'agree' || state === 'disagree')) {
+      return `${baseShadow}, 0 0 24px 6px #cccccc`; // Grey glow for intro
+    }
     if (state === 'disagree') return `${baseShadow}, 0 0 24px 6px #ff4d4d`;
     if (state === 'agree') return `${baseShadow}, 0 0 24px 6px #4dff88`;
     return baseShadow;
   });
 
   const feedbackLabelColor = useTransform(feedbackState, (state) => {
+    if (isIntro && (state === 'agree' || state === 'disagree')) {
+      return '#cccccc'; // Grey color for intro
+    }
     if (state === 'agree') return '#4dff88';
     if (state === 'disagree') return '#ff4d4d';
     return 'transparent';
@@ -49,6 +56,14 @@ export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable 
   // The useMotionValueEvent hook syncs the motion value with React state.
   // When `feedbackState` changes, we update the `feedbackText` state, triggering a re-render.
   useMotionValueEvent(feedbackState, "change", (latest) => {
+    if (isIntro) {
+      if (latest === 'agree' || latest === 'disagree') {
+        setFeedbackText('continue');
+      } else {
+        setFeedbackText('');
+      }
+      return;
+    }
     if (latest === 'agree') {
       setFeedbackText('agree');
     } else if (latest === 'disagree') {
@@ -128,7 +143,9 @@ export default function SwipeableCard({ question, isIntro, onSwipe, isDraggable 
           className="w-full h-full p-6"
           style={{ opacity: contentOpacity }}
         >
-          {isIntro ? (
+          {children ? (
+            children
+          ) : isIntro ? (
             <div className="flex flex-col h-full w-full justify-center items-center text-center space-y-8 p-4">
               <div className="w-24 h-24">
                 <img
