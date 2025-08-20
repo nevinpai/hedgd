@@ -69,7 +69,7 @@ async function fetchQuestionsFromGemini() {
   let attempts = 0;
   while (attempts < 3) {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
       
       const realTimeContext = await getRealTimeNews();
       const contextString = realTimeContext.map(r => `Title: ${r.title}\nContent: ${r.content}\nURL: ${r.url}`).join('\n\n---\n\n');

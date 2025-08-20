@@ -6,7 +6,6 @@ import WelcomeScreen from './components/WelcomeScreen';
 import LoadingScreen from './components/LoadingScreen';
 import BackArrowIcon from './components/BackArrowIcon';
 import RecommendationIntroCard from './components/RecommendationIntroCard';
-import RecommendationCard from './components/RecommendationCard';
 import SummaryCard from './components/SummaryCard';
 import './index.css';
 
@@ -131,7 +130,9 @@ export default function App() {
   if (showSummary) {
     return (
         <div style={{...pageStyle, backgroundColor: '#1a223f'}}>
-            <SummaryCard answers={answers} recommendations={recommendations} />
+            <SwipeableCard onSwipe={() => {}} isDraggable={false}>
+                <SummaryCard answers={answers} recommendations={recommendations} />
+            </SwipeableCard>
         </div>
     );
   }
@@ -184,6 +185,7 @@ export default function App() {
           {allQuestionsAnswered && recommendationCardIndex === 0 && (
             <SwipeableCard
                 key="recommendation-intro"
+                isIntro={true}
                 onSwipe={handleSwipe}
                 isDraggable={true}
             >
@@ -198,11 +200,8 @@ export default function App() {
             if (cardRealIndex >= recommendations.length) return null;
 
             return (
-                <RecommendationCard
+                <SwipeableCard
                     key={rec.ticker}
-                    ticker={rec.ticker}
-                    explanation={rec.explanation}
-                    score={rec.score}
                     onSwipe={handleSwipe}
                     isDraggable={isTopCard}
                     style={{
@@ -211,7 +210,37 @@ export default function App() {
                         opacity: 1 - index * 0.1,
                         transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
                     }}
-                />
+                >
+                    <div className="w-full h-full p-6 flex flex-col justify-between">
+                        <h2 style={{
+                            fontFamily: 'Georgia, serif',
+                            fontSize: 'clamp(2rem, 8vw, 3.5rem)',
+                            lineHeight: '1.2',
+                            fontWeight: '550',
+                            color: '#000000',
+                            textAlign: 'center'
+                        }}>
+                            {rec.ticker}
+                        </h2>
+                        <p style={{
+                            fontFamily: 'Georgia, serif',
+                            fontSize: '1.2rem',
+                            lineHeight: '1.5',
+                            color: '#333333',
+                            textAlign: 'center'
+                        }}>
+                            {rec.explanation}
+                        </p>
+                        <div style={{
+                            fontFamily: 'Georgia, serif',
+                            fontSize: '1rem',
+                            color: '#666666',
+                            textAlign: 'center'
+                        }}>
+                            Alignment Score: {Math.round(rec.score * 100)}%
+                        </div>
+                    </div>
+                </SwipeableCard>
             );
           })}
         </AnimatePresence>

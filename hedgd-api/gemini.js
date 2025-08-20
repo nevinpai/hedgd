@@ -4,7 +4,7 @@ const { stockCache, stocks } = require('./tavily.js');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 async function generateRecommendations(userAnswers) {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     let context = "Company Data:\\n";
     for (const stock of stocks) {
